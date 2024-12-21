@@ -86,28 +86,34 @@ const gallery = document.querySelector(".gallery");
 
 gallery.innerHTML = imagesGalleryCard;
 
+// створення модалки
+const modalInstance = basicLightbox.create(`
+  <img
+    src="#"
+    alt="#"
+    width="800"
+    height="600"
+  />
+`);
+
 gallery.addEventListener("click", (event) => {
   event.preventDefault();
 
-  const imageEl = event.target.closest(".gallery-item");
-
-  if (!imageEl) {
+  const imageEl = event.target;
+  if (imageEl.nodeName !== "IMG") {
     return;
   }
 
   // отримання великого зображення
-  const largeImageURL = imageEl.querySelector("img").dataset.source;
-  const altText = imageEl.querySelector("img").alt;
+  const largeImageURL = imageEl.dataset.source;
+  const altText = imageEl.alt;
 
-  // створення модалки
-  const modalInstance = basicLightbox.create(`
-    <img
-      src="${largeImageURL}"
-      alt="${altText}"
-      width="800"
-      height="600"
-    />
-  `);
+  const modalImg = modalInstance.element().querySelector("img");
+
+  modalImg.src = largeImageURL;
+  modalImg.alt = altText;
 
   modalInstance.show();
 });
+
+console.log(modalInstance.element());
